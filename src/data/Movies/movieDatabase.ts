@@ -1,10 +1,9 @@
+import { searchMovieGateway } from '../../business/gateways/Movies/searchMovieGateway';
 import knex from 'knex'
-import { newMovieGateway } from '../business/gateways/newMovieGateway';
-import { Movie } from '../business/entities/Movie';
+import { newMovieGateway } from '../../business/gateways/Movies/newMovieGateway';
+import { Movie, MovieInfo } from '../../business/entities/Movie';
 
-
-
-export class CreateMovieDB implements newMovieGateway {
+export class MovieDatabase implements newMovieGateway, searchMovieGateway {
     private connection: knex;
 
     constructor(){
@@ -19,11 +18,13 @@ export class CreateMovieDB implements newMovieGateway {
         });
     }
 
-    async saveMovie(movie: Movie, ): Promise<knex> {
+    public async saveMovie(movie: Movie): Promise<void> {
         if (!movie.getId()) {
             throw new Error('Id not found');
         };
-        
-        return this.connection
+
+        await this.connection('Movies').insert(movie.createNewMovie());
     };
+
+    public async getMovie(): Promise<void>{}
 }
