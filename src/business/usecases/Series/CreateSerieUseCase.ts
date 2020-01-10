@@ -31,9 +31,11 @@ export class CreateSerieUseCase {
       this.idGenerator.generate()
     );
 
-    const result = { connection: await this.serieGateway.createSerie(serie) };
+    await this.serieGateway.createSerie(serie);
 
-    return result;
+    return {
+      message: 'Series created sucessfully'
+    };
   }
 }
 
