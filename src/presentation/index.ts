@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express'
-import { CreateNewMovieUseCase } from '../business/usecases/createNewMovie/createNewMovie'
-import { CreateMovieDB } from '../data/createMovieDB'
+import { CreateNewMovieUseCase } from '../business/usecases/Movies/createNewMovie/createNewMovie'
+import { MovieDatabase } from '../data/Movies/movieDatabase'
 import { V4IdGenerator } from '../services/V4IdGenerator'
 import { MovieInfo } from '../business/entities/Movie'
 
@@ -9,7 +9,7 @@ const app = express()
 app.use(express.json()) // Linha mágica (middleware)
 
 app.post('/createMovie', async (req: Request, res: Response) => {
-    const movieGateway = new CreateMovieDB()
+    const movieGateway = new MovieDatabase()
     const idGenerator = new V4IdGenerator()
     const useCase = new CreateNewMovieUseCase(movieGateway, idGenerator)
 
@@ -22,20 +22,17 @@ app.post('/createMovie', async (req: Request, res: Response) => {
         picture: req.body.picture
     }
 
-    const result = await useCase.execute(input);
-
-    const message = "New movie created successfuly."
+    const result = await useCase.execute(input)
     
-    const query = result.connection('Movies').insert(result.movie);
-    query
-        .then(result => {
-            res.send({
-                message: message
-            });
-        })
-        .catch(e => {
-            res.send(e);
-        });
+    res.send(result)
+});
+
+app.get('/search/movie/:id', async (req: Request, res: Response) => {
+    const movieGateway = new MovieDatabase()
+    const useCase = new V4IdGenerator()
+
+    const idToSearch = req.params.id;
+     
 })
 
 export default app
