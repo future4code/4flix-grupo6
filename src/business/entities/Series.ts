@@ -1,4 +1,4 @@
-import { Episode } from "./Episode";
+import { Episode } from './Episode';
 
 export class Series {
   constructor(
@@ -8,34 +8,25 @@ export class Series {
     private link: string,
     private picture: string,
     private episodes: Episode[],
-    private id?: string,
+    private id?: string
   ) {}
 
-  public getId() {
+  getId() {
     return this.id;
   }
 
-  public getTitle() {
-    return this.title;
-  }
-
-  public getDate() {
-    return this.date;
-  }
-
-  public getSynopsis() {
-    return this.synopsis;
-  }
-
-  public getLink() {
-    return this.link;
-  }
-
-  public getPicture() {
-    return this.picture;
-  }
-
-  public getEpisodes(){
-    return this.episodes
+  createNewSerie() {
+    const newSerie = {
+      title: this.title,
+      date: this.date,
+      synopsis: this.synopsis,
+      link: this.link,
+      picture: this.picture,
+      episodes: this.episodes.map(ep => {
+        return ep.createNewEpisode()
+      }),
+      id: this.id
+    };
+    return newSerie;
   }
 }
