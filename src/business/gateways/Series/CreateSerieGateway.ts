@@ -3,5 +3,6 @@ import { Series } from '../../entities/Series';
 import knex from 'knex';
 
 export interface CreateSerieGateway {
-  createSerie(serie: Series, episode: Episode[]): Promise<knex>;
+  createSerie(serie: Series): Promise<knex>;
+  createEpisode(episode: Episode): Promise<void>;
 }

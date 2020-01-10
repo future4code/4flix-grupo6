@@ -1,3 +1,4 @@
+import { Episode } from './../../business/entities/Episode';
 import { Series } from './../../business/entities/Series';
 import { CreateSerieGateway } from './../../business/gateways/Series/CreateSerieGateway';
 import knex from 'knex'
@@ -23,5 +24,11 @@ export class CreateSerieDB implements CreateSerieGateway {
         };
         
         return this.connection
+    }
+
+    async createEpisode(episode: Episode): Promise<void> {
+        if (!episode.getId()) {
+            throw new Error('Id not found');
+        };
     }
   }

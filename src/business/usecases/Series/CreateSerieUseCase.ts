@@ -1,9 +1,7 @@
 import { Episode } from './../../entities/Episode';
-import { CreateEpisodeUseCase } from './CreateEpisodeUseCase';
 import { RandomIdGenerator } from './../../../services/V4IdGenerator';
 import { CreateSerieGateway } from '../../gateways/Series/CreateSerieGateway';
 import { Series } from '../../entities/Series';
-
 
 export class CreateSerieUseCase {
   constructor(
@@ -11,22 +9,31 @@ export class CreateSerieUseCase {
     private idGenerator: RandomIdGenerator
   ) {}
 
-  async execute(input: CreateSerieInput, episode: Episode[]): Promise<CreateSerieOutput> {
+  async execute(input: CreateSerieInput) {
+    const newEpisode = input.episodes.map(episodies => {
+      return new Episode(
+        episodies.title,
+        episodies.length,
+        episodies.link,
+        episodies.picture,
+        episodies.synopsis,
+        this.idGenerator.generate()
+      );
+    });
+
     const serie = new Series(
       input.title,
       input.date,
       input.synopsis,
       input.link,
       input.picture,
-      input.episodes,
+      newEpisode,
       this.idGenerator.generate()
     );
 
-    await this.serieGateway.createSerie(serie, episode);
-    const message: CreateSerieOutput = {
-      msg: 'Série criada com sucesso!'
-    };
-    return message;
+    const result = { connection: await this.serieGateway.createSerie(serie) };
+
+    return result;
   }
 }
 
@@ -36,9 +43,13 @@ export interface CreateSerieInput {
   synopsis: string;
   link: string;
   picture: string;
-  episodes: Episode[];
+  episodes: CreateEpisodeInput[];
 }
 
-export interface CreateSerieOutput {
-  msg: string;
+export interface CreateEpisodeInput {
+  title: string;
+  length: number;
+  link: string;
+  picture: string;
+  synopsis: string;
 }
