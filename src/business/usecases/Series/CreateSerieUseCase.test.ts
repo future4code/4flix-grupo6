@@ -1,14 +1,11 @@
 import { CreateSerieGateway } from '../../gateways/Series/CreateSerieGateway';
-import { CreateSerieUseCase, CreateSerieInput, RandomIdGenerator, CreateSerieOutput } from './CreateSerieUseCase';
+import { CreateSerieUseCase, CreateSerieInput, CreateSerieOutput } from './CreateSerieUseCase';
 import { Series } from '../../entities/Series';
+import { RandomIdGenerator } from '../../../services/V4IdGenerator';
+import Knex = require('knex');
 
 test('Testing serie creator', async () => {
-  const createSerieGateway: CreateSerieGateway = {
-    createSerie(serie: Series): Promise<CreateSerieOutput> {
-      return ;
-    }
-  };
-
+  
   const idGenerator: RandomIdGenerator = {
     generate(): string {
       return 'abc'

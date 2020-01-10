@@ -2,13 +2,13 @@ import { Episode } from "./Episode";
 
 export class Series {
   constructor(
-    private id: string,
     private title: string,
     private date: Date,
     private synopsis: string,
     private link: string,
     private picture: string,
     private episodes: Episode[],
+    private id?: string,
   ) {}
 
   public getId() {
