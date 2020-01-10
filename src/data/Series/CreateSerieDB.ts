@@ -23,5 +23,6 @@ export class CreateSerieDB implements CreateSerieGateway {
       throw new Error('Id not found');
     }
     this.connection('Series').insert(serie.createNewSerie());
+    
   }
 }
